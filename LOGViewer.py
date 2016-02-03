@@ -42,7 +42,8 @@ def adjust_tbase(logs):
         if (max(log.log[0]) < maximum): maximum = max(log.log[0])
 
     newlogs = [[[], []] for i in range(len(logs))]
-
+    # Limito la finestra di tempo ai minimi e massimi comuni a tutti i log
+    # Ricreo la matrice da zero aggiungendo solo i dati da considerare
     i = 0
     for log in logs:
         n = 0
@@ -57,17 +58,18 @@ def adjust_tbase(logs):
         i += 1
     return newlogs
 
+# Lista dei log
 logs = []
-
+# Lista dei file selezionati
 flist = sys.argv[1:len(sys.argv)]
-
+# Creo un log per ogni file
 for f in flist:
     logs.append(log(f))
 
-print(logs[0].log[0][0])
-
+# Matrice dei dati filtrata
 pltlogs = adjust_tbase(logs)
 
+# Aggiungo tutti i log al plot con i relativi nomi
 i = 0
 for log in pltlogs:
     plt.plot_date(log[0], log[1], '-', label=logs[i].name)
